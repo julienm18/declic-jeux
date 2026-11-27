@@ -5,29 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PAC-PRÉVENTION</title>
 <style>
-  body{margin:0;background:#1e1e2e;color:#fff;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh}
-  #pp-wrap{width:100%;max-width:480px;padding:6px;box-sizing:border-box}
-  #game{position:relative;background:#11111b;border:3px solid #6c7086;border-radius:8px;overflow:hidden;line-height:0;outline:none}
-  #pp-cv{width:100%;height:auto;display:block}
-  #pp-ov{position:absolute;inset:0;background:#11111bf2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px;line-height:1.35;overflow:auto;font-size:14px}
-  #pp-ov h2{margin:4px 0;color:#f9e2af;font-size:22px}
-  #pp-ov p{margin:4px 0;max-width:400px}
-  .pp-b{cursor:pointer;margin:5px;padding:10px 18px;border:0;border-radius:8px;background:#89b4fa;color:#11111b;font-weight:700;font-size:15px}
-  .pp-b.r{background:#f38ba8}
-  #pp-hud{margin-top:8px;background:#181825;padding:8px 12px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14px}
-  #pp-msg{color:#f9e2af;flex:1;min-height:38px;display:flex;align-items:center}
-  #pp-st{background:#313244;padding:4px 10px;border-radius:4px;white-space:nowrap;font-weight:700;font-size:13px}
-  #pp-mu{border:0;background:#313244;color:#fff;border-radius:6px;padding:6px 8px;cursor:pointer}
-  #pp-pad{display:none;margin-top:8px;grid-template-columns:repeat(3,56px);gap:6px;justify-content:center}
-  #pp-pad button{height:46px;border:0;border-radius:8px;background:#313244;color:#fff;font-size:20px}
-  @media (pointer:coarse){#pp-pad{display:grid}}
+:root{--vh:100vh;--res:130px}@supports (height:100dvh){:root{--vh:100dvh}}
+@media (pointer:coarse){:root{--res:215px}}
+html,body{margin:0;height:100%}
+body{background:#1e1e2e;color:#fff;font-family:system-ui,sans-serif;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pp-wrap{--gw:min(calc(100vw - 14px),calc((var(--vh) - var(--res))*1.4),760px);display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px;box-sizing:border-box}
+#game{position:relative;width:var(--gw);aspect-ratio:462/330;container-type:inline-size;background:#11111b;box-shadow:0 0 0 3px #6c7086;border-radius:8px;overflow:hidden;line-height:0;outline:none}
+#pp-cv{width:100%;height:100%;display:block}
+#pp-ov{position:absolute;inset:0;background:#11111bf2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2cqw;line-height:1.3;overflow:auto;font-size:12px;font-size:clamp(9px,3cqw,16px)}
+#pp-ov h2{margin:.2em 0;color:#f9e2af;font-size:1.7em}
+#pp-ov p{margin:.25em 0;max-width:92%}
+.pp-b{cursor:pointer;margin:.3em;padding:.6em 1.2em;border:0;border-radius:8px;background:#89b4fa;color:#11111b;font-weight:700;font-size:1.05em}
+.pp-b.r{background:#f38ba8}
+#pp-side{width:var(--gw);display:flex;flex-direction:column;gap:8px}
+#pp-hud{background:#181825;padding:8px 12px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14px}
+#pp-msg{color:#f9e2af;flex:1;min-height:38px;display:flex;align-items:center;line-height:1.25}
+#pp-st{background:#313244;padding:4px 10px;border-radius:4px;white-space:nowrap;font-weight:700;font-size:13px}
+#pp-mu{border:0;background:#313244;color:#fff;border-radius:6px;padding:6px 8px;cursor:pointer}
+#pp-pad{display:none;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:280px;margin:0 auto}
+#pp-pad button{height:58px;border:0;border-radius:10px;background:#313244;color:#fff;font-size:22px;touch-action:manipulation}
+@media (pointer:coarse){#pp-pad{display:grid}}
+@media (orientation:landscape) and (max-height:700px){#pp-wrap{--gw:min(calc(100vw - 240px),calc((var(--vh) - 16px)*1.4));flex-direction:row;gap:12px}#pp-side{width:210px}#pp-hud{flex-direction:column;align-items:stretch}#pp-pad{max-width:none}#pp-pad button{height:46px}}
 </style>
 </head>
 <body>
 <div id="pp-wrap">
   <div id="game" tabindex="0"><canvas id="pp-cv" width="462" height="330"></canvas><div id="pp-ov"></div></div>
-  <div id="pp-hud"><div id="pp-msg">Utilise les flèches pour bouger.</div><div id="pp-st">0 pts</div><button id="pp-mu" aria-label="Son">🔊</button></div>
-  <div id="pp-pad"><span></span><button id="pp-u">▲</button><span></span><button id="pp-l">◀</button><button id="pp-d">▼</button><button id="pp-r">▶</button></div>
+  <div id="pp-side"><div id="pp-hud"><div id="pp-msg">Utilise les flèches pour bouger.</div><div id="pp-st">0 pts</div><button id="pp-mu" aria-label="Son">🔊</button></div>
+  <div id="pp-pad"><span></span><button id="pp-u">▲</button><span></span><button id="pp-l">◀</button><button id="pp-d">▼</button><button id="pp-r">▶</button></div></div>
 </div>
 <script>
 (function(){
